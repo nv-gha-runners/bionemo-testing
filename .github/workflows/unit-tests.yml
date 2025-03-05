@@ -35,7 +35,8 @@ jobs:
 
   build-bionemo-image:
     needs: pre-commit
-    runs-on: nv-cpu-general
+    runs-on:
+      group: nv-cpu-general
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'SKIP_CI') }}
     steps:
       - name: Login to GitHub Container Registry
@@ -88,7 +89,8 @@ jobs:
 
   run-tests:
     needs: build-bionemo-image
-    runs-on: nv-gpu-general
+    runs-on:
+      group: nv-gpu-general
     container:
       image: ghcr.io/${{ github.repository }}:${{ github.run_id }}
       options: --gpus all
