@@ -89,12 +89,9 @@ jobs:
 
   run-tests:
     needs: build-bionemo-image
-    runs-on:
-      group: nv-gpu-general
+    runs-on: linux-amd64-gpu-l4-latest-1
     container:
       image: ghcr.io/${{ github.repository }}:${{ github.run_id }}
-      env:
-        NVIDIA_VISIBLE_DEVICES: ${{ env.NVIDIA_VISIBLE_DEVICES }} # GPU jobs must set this container env variable
 
     steps:
       - name: Checkout repository
