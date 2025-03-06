@@ -73,7 +73,7 @@ jobs:
         id: cache
         with:
           image: ghcr.io/${{ github.repository }}/build-cache
-          extra-cache-from: "ghcr.io/${{ github.repository }}/build-cache:main"
+          extra-cache-from: "type=registry,ref=ghcr.io/${{ github.repository }}/build-cache:main"
 
       - name: Build and push
         uses: docker/build-push-action@v5
