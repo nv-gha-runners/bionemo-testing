@@ -73,8 +73,7 @@ jobs:
         id: cache
         with:
           image: ghcr.io/${{ github.repository }}/build-cache
-          pull-request-cache: true
-          cache-key-fallback: "main"
+          extra-cache-from: "ghcr.io/${{ github.repository }}/build-cache:main"
 
       - name: Build and push
         uses: docker/build-push-action@v5
