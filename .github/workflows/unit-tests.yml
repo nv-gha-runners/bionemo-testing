@@ -35,8 +35,7 @@ jobs:
 
   build-bionemo-image:
     needs: pre-commit
-    runs-on:
-      group: nv-cpu-general
+    runs-on: linux-amd64-cpu4
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'SKIP_CI') }}
     steps:
       - name: Login to GitHub Container Registry
