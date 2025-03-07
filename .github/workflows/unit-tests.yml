@@ -86,7 +86,7 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKER_REGISTRY }}
+          images: svcbionemo023/bionemo-framework
           tags: |
             type=schedule
             type=ref,event=branch
@@ -101,8 +101,8 @@ jobs:
       - uses: int128/docker-build-cache-config-action@v1
         id: cache
         with:
-          image: ${{ vars.DOCKER_REGISTRY }}/build-cache
-          extra-cache-from: "type=registry,ref=${{ vars.DOCKER_REGISTRY }}/build-cache:main"
+          image: svcbionemo023/bionemo-build-cache
+          extra-cache-from: "type=registry,ref=svcbionemo023/bionemo-build-cache:main"
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -119,7 +119,7 @@ jobs:
       - get-pr-labels
     runs-on: linux-amd64-gpu-l4-latest-1
     container:
-      image: ${{ vars.DOCKER_REGISTRY }}:${{ github.run_id }}
+      image: svcbionemo023/bionemo-framework:${{ github.run_id }}
       credentials:
         username: ${{ vars.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
