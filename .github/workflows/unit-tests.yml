@@ -53,7 +53,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          LABELS=$(gh api repos/${{ github.repository }}/pulls/${{ steps.get-pr-num.outputs.pr_num }} --jq '.labels[].name')
+          LABELS=$(gh api repos/${{ github.repository }}/pulls/${{ steps.get-pr-num.outputs.pr_num }} --jq '[.labels[].name]' || echo "[]")
           echo "labels=$LABELS" >> $GITHUB_OUTPUT
 
       - name: Set empty labels for non-PR branches
@@ -68,7 +68,7 @@ jobs:
     runs-on: linux-amd64-cpu4
     if: ${{ !contains(fromJSON(needs.get-pr-labels.outputs.labels || '[]'), 'SKIP_CI') }}
     steps:
-      - name: Login to GitHub Container Registry
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKER_USERNAME }}
@@ -120,7 +120,9 @@ jobs:
     runs-on: linux-amd64-gpu-l4-latest-1
     container:
       image: ${{ vars.DOCKER_REGISTRY }}:${{ github.run_id }}
-
+      credentials:
+        username: ${{ vars.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
